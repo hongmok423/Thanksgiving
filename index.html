@@ -40,7 +40,7 @@ const SUPABASE_URL='https://pnzubrobhbhiunujasnz.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_DRjAgBS8ai-gtACDDf-Mmw_6TnVuZ5i';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const blank=(name,amount=0)=>({name,amount,content:'',manager:'',operator:'',url:'',memo:'',steps:[false,false,false,false,false,false],parent:''});
-const SEED={confirmedTarget:138425514,projects:[],planned:[]};
+const SEED={confirmedTarget:139925514,projects:[],planned:[]};
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(SEED)}catch{state=structuredClone(SEED)}
 let cloudUser=null,cloudRevision=0,cloudChannel=null,savingCloud=false;
 let kind='projects',selected=0,timer;const $=id=>document.getElementById(id);const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -50,7 +50,7 @@ function queue(){clearTimeout(timer);$('saveState').textContent='저장 중…';
 function parentBudget(name){const parent=state.projects.find(x=>!x.parent&&x.name===name);const children=state.projects.filter(x=>x.parent===name);const allocated=Number(parent?.amount||0);const spent=children.reduce((s,x)=>s+Number(x.amount||0),0);return{allocated,spent,balance:allocated-spent,count:children.length}}
 function apply20261109Update(){
   let changed=false;state.projects=Array.isArray(state.projects)?state.projects:[];state.planned=Array.isArray(state.planned)?state.planned:[];
-  if(state.confirmedTarget!==138425514){state.confirmedTarget=138425514;changed=true}
+  if(state.confirmedTarget!==139925514){state.confirmedTarget=139925514;changed=true}
   const leviteName='오늘을 사는 레위인',secondName='10-2 이오늘 찬양사역자 가정 가구 지원';
   const secondMatches=state.projects.filter(x=>x.parent===leviteName&&(Number(x.amount)===2025440||x.name===secondName));
   let second=secondMatches.sort((a,b)=>(b.steps?.filter(Boolean).length||0)-(a.steps?.filter(Boolean).length||0))[0];
@@ -58,10 +58,12 @@ function apply20261109Update(){
   else{for(const [k,v] of Object.entries({name:secondName,amount:2025440,manager:'추수감사절기구제부(부장 조병일)',operator:'이상민 목사',parent:leviteName})){if(second[k]!==v){second[k]=v;changed=true}}}
   for(const duplicate of secondMatches.filter(x=>x!==second)){second.steps=second.steps.map((v,i)=>v||duplicate.steps?.[i]);second.url=second.url||duplicate.url||'';state.projects.splice(state.projects.indexOf(duplicate),1);changed=true}
   const name='중계동에 거주하는 장애인 가정에 세탁기와 식료품 지원';
-  const replacedName='노원구 형편이 어려운 중학생 8명에게 겨울 외투와 2가정에 식료품 지원',newProject={...blank(name,1300000),content:'치매를 앓는 어르신과 지적장애가 있는 어머니와 아들이 함께 생활하는 3인 가정에 세탁기와 식료품을 지원하여 위생적이고 안정적인 생활을 할 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};
-  const existing=state.projects.find(x=>!x.parent&&x.name===name),replacedIndex=state.projects.findIndex(x=>!x.parent&&x.name===replacedName);
-  if(!existing){if(replacedIndex>=0)state.projects.splice(replacedIndex,1,newProject);else state.projects.push(newProject);changed=true}else if(replacedIndex>=0){state.projects.splice(replacedIndex,1);changed=true}
-  const updatedIndex=state.projects.findIndex(x=>!x.parent&&x.name===name);if(updatedIndex>0){const [updatedProject]=state.projects.splice(updatedIndex,1);state.projects.unshift(updatedProject);changed=true}
+  const newProject={...blank(name,1300000),content:'치매를 앓는 어르신과 지적장애가 있는 어머니와 아들이 함께 생활하는 3인 가정에 세탁기와 식료품을 지원하여 위생적이고 안정적인 생활을 할 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};
+  if(!state.projects.some(x=>!x.parent&&x.name===name)){state.projects.unshift(newProject);changed=true}
+  const restoredName='노원구 형편이 어려운 중학생 8명에게 겨울 외투와 2가정에 식료품 지원';
+  let restored=state.projects.find(x=>!x.parent&&x.name===restoredName);
+  if(!restored){restored={...blank(restoredName,1500000),content:'노원구의 한 중학교에 재학 중인 형편이 어려운 학생 8명에게 겨울 외투를 지원하고, 어려운 2가정에는 장보기로 먹거리를 채워주며 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};state.projects.unshift(restored);changed=true}
+  else{const restoredIndex=state.projects.indexOf(restored);if(restoredIndex>0){state.projects.splice(restoredIndex,1);state.projects.unshift(restored);changed=true}}
   return changed;
 }
 function summary(){
