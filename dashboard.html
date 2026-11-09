@@ -61,6 +61,7 @@ function apply20261109Update(){
   const replacedName='노원구 형편이 어려운 중학생 8명에게 겨울 외투와 2가정에 식료품 지원',newProject={...blank(name,1300000),content:'치매를 앓는 어르신과 지적장애가 있는 어머니와 아들이 함께 생활하는 3인 가정에 세탁기와 식료품을 지원하여 위생적이고 안정적인 생활을 할 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};
   const existing=state.projects.find(x=>!x.parent&&x.name===name),replacedIndex=state.projects.findIndex(x=>!x.parent&&x.name===replacedName);
   if(!existing){if(replacedIndex>=0)state.projects.splice(replacedIndex,1,newProject);else state.projects.push(newProject);changed=true}else if(replacedIndex>=0){state.projects.splice(replacedIndex,1);changed=true}
+  const updatedIndex=state.projects.findIndex(x=>!x.parent&&x.name===name);if(updatedIndex>0){const [updatedProject]=state.projects.splice(updatedIndex,1);state.projects.unshift(updatedProject);changed=true}
   return changed;
 }
 function summary(){
