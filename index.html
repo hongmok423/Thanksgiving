@@ -63,7 +63,7 @@ function apply20261109Update(){
   const restoredName='노원구 형편이 어려운 중학생 8명에게 겨울 외투와 2가정에 식료품 지원';
   let restored=state.projects.find(x=>!x.parent&&x.name===restoredName);
   if(!restored){restored={...blank(restoredName,1500000),content:'노원구의 한 중학교에 재학 중인 형편이 어려운 학생 8명에게 겨울 외투를 지원하고, 어려운 2가정에는 장보기로 먹거리를 채워주며 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};state.projects.unshift(restored);changed=true}
-  else{const restoredIndex=state.projects.indexOf(restored);if(restoredIndex>0){state.projects.splice(restoredIndex,1);state.projects.unshift(restored);changed=true}}
+  else{for(const [k,v] of Object.entries({amount:1500000,content:'노원구의 한 중학교에 재학 중인 형편이 어려운 학생 8명에게 겨울 외투를 지원하고, 어려운 2가정에는 장보기로 먹거리를 채워주며 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'})){if(restored[k]!==v){restored[k]=v;changed=true}}}
   const malformed=state.projects.filter(x=>!x.parent&&(x.name==='#'+restoredName||(x.name==='담당 : 추수감사절기구제부(부장 조병일)'&&Number(x.amount)===0)));
   for(const duplicate of malformed){restored.steps=restored.steps.map((v,i)=>v||duplicate.steps?.[i]);restored.url=restored.url||duplicate.url||'';state.projects.splice(state.projects.indexOf(duplicate),1);changed=true}
   const additions=[
