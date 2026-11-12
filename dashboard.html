@@ -85,10 +85,10 @@ function apply20261109Update(){
   const elder=addedProjects[0];if(!elder.steps?.[0]){elder.steps=Array.isArray(elder.steps)?elder.steps:[false,false,false,false,false,false];elder.steps[0]=true;changed=true}
   const ssangmun=state.projects.find(x=>!x.parent&&x.name==='쌍문동 저소득 가정 김치·쌀');if(ssangmun&&Number(ssangmun.amount)!==2615000){ssangmun.amount=2615000;changed=true}
   const overseas=state.projects.find(x=>!x.parent&&x.name==='해외 어려운 이웃 구제사역');if(overseas&&Number(overseas.amount)!==22000000){overseas.amount=22000000;changed=true}
-  const coal=state.projects.find(x=>!x.parent&&x.name==='무수골 어르신 4가정 연탄 1,200장');if(coal&&Number(coal.amount)!==1300000){coal.amount=1300000;changed=true}
+  const coal=state.projects.find(x=>!x.parent&&x.name==='무수골 어르신 4가정 연탄 1,200장');if(coal){if(Number(coal.amount)!==1300000){coal.amount=1300000;changed=true}if(coal.url!=='https://www.sls.or.kr/_bbs/freebbs/5001191'){coal.url='https://www.sls.or.kr/_bbs/freebbs/5001191';changed=true}if(!coal.steps?.[0]){coal.steps=Array.isArray(coal.steps)?coal.steps:[false,false,false,false,false,false];coal.steps[0]=true;changed=true}}
   const leviteParent=state.projects.find(x=>!x.parent&&x.name===leviteName),otherLeviteChildren=state.projects.filter(x=>x.parent===leviteName&&x!==martyr);
   if(leviteParent){for(const [k,v] of Object.entries({content:'오늘을 사는 레위인을 위한 지원. 하위 집행내역 3건을 포함합니다.',memo:'하위사업 11,544,583원, 2,025,440원, 2,000,000원은 상위 40,000,000원에 포함합니다. 현재 잔액 24,429,977원. 총액에 중복 합산하지 않습니다.'})){if(leviteParent[k]!==v){leviteParent[k]=v;changed=true}}}
-  const leviteGroup=leviteParent?[leviteParent,martyr,...otherLeviteChildren]:[martyr,...otherLeviteChildren];if(leviteGroup.some((x,i)=>state.projects[i]!==x)){state.projects=[...leviteGroup,...state.projects.filter(x=>!leviteGroup.includes(x))];changed=true}
+  const leviteGroup=leviteParent?[leviteParent,martyr,...otherLeviteChildren]:[martyr,...otherLeviteChildren],priority=coal?[coal,...leviteGroup]:leviteGroup;if(priority.some((x,i)=>state.projects[i]!==x)){state.projects=[...priority,...state.projects.filter(x=>!priority.includes(x))];changed=true}
   return changed;
 }
 function summary(){
