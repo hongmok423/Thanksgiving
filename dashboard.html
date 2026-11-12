@@ -61,6 +61,7 @@ function apply20261109Update(){
   let martyr=state.projects.find(x=>x.parent===leviteName&&x.name===martyrName);
   const martyrData={name:martyrName,amount:2000000,content:'아프가니스탄에서 순교한 고 배형규 목사의 아내 김희연 사모와 딸 배지혜 씨에게 겨울 외투와 필요한 의류 등을 지원하며 사랑으로 섬깁니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'조현삼 목사',parent:leviteName};
   if(!martyr){martyr={...blank(martyrName,2000000),...martyrData};state.projects.push(martyr);changed=true}else{for(const [k,v] of Object.entries(martyrData)){if(martyr[k]!==v){martyr[k]=v;changed=true}}}
+  const martyrDuplicates=state.projects.filter(x=>x.parent===leviteName&&x!==martyr&&(x.name?.includes('순교자 유가족')||String(x.content||'').includes('배형규')));for(const duplicate of martyrDuplicates){martyr.steps=martyr.steps.map((v,i)=>v||duplicate.steps?.[i]);martyr.url=martyr.url||duplicate.url||'';martyr.memo=martyr.memo||duplicate.memo||'';state.projects.splice(state.projects.indexOf(duplicate),1);changed=true}
   const name='중계동에 거주하는 장애인 가정에 세탁기와 식료품 지원';
   const newProject={...blank(name,1300000),content:'치매를 앓는 어르신과 지적장애가 있는 어머니와 아들이 함께 생활하는 3인 가정에 세탁기와 식료품을 지원하여 위생적이고 안정적인 생활을 할 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};
   if(!state.projects.some(x=>!x.parent&&x.name===name)){state.projects.unshift(newProject);changed=true}
