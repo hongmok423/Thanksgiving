@@ -57,6 +57,10 @@ function apply20261109Update(){
   if(!second){second={...blank(secondName,2025440),content:'이오늘 찬양사역자 가정에 가구를 지원합니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'이상민 목사',parent:leviteName};const parentIndex=state.projects.findIndex(x=>!x.parent&&x.name===leviteName);state.projects.splice(parentIndex<0?0:parentIndex+1,0,second);changed=true}
   else{for(const [k,v] of Object.entries({name:secondName,amount:2025440,manager:'추수감사절기구제부(부장 조병일)',operator:'이상민 목사',parent:leviteName})){if(second[k]!==v){second[k]=v;changed=true}}}
   for(const duplicate of secondMatches.filter(x=>x!==second)){second.steps=second.steps.map((v,i)=>v||duplicate.steps?.[i]);second.url=second.url||duplicate.url||'';state.projects.splice(state.projects.indexOf(duplicate),1);changed=true}
+  const martyrName='순교자 유가족에게 겨울 외투와 의류 등 지원';
+  let martyr=state.projects.find(x=>x.parent===leviteName&&x.name===martyrName);
+  const martyrData={name:martyrName,amount:2000000,content:'아프가니스탄에서 순교한 고 배형규 목사의 아내 김희연 사모와 딸 배지혜 씨에게 겨울 외투와 필요한 의류 등을 지원하며 사랑으로 섬깁니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'조현삼 목사',parent:leviteName};
+  if(!martyr){martyr={...blank(martyrName,2000000),...martyrData};state.projects.push(martyr);changed=true}else{for(const [k,v] of Object.entries(martyrData)){if(martyr[k]!==v){martyr[k]=v;changed=true}}}
   const name='중계동에 거주하는 장애인 가정에 세탁기와 식료품 지원';
   const newProject={...blank(name,1300000),content:'치매를 앓는 어르신과 지적장애가 있는 어머니와 아들이 함께 생활하는 3인 가정에 세탁기와 식료품을 지원하여 위생적이고 안정적인 생활을 할 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};
   if(!state.projects.some(x=>!x.parent&&x.name===name)){state.projects.unshift(newProject);changed=true}
@@ -81,13 +85,14 @@ function apply20261109Update(){
   const ssangmun=state.projects.find(x=>!x.parent&&x.name==='쌍문동 저소득 가정 김치·쌀');if(ssangmun&&Number(ssangmun.amount)!==2615000){ssangmun.amount=2615000;changed=true}
   const overseas=state.projects.find(x=>!x.parent&&x.name==='해외 어려운 이웃 구제사역');if(overseas&&Number(overseas.amount)!==22000000){overseas.amount=22000000;changed=true}
   const coal=state.projects.find(x=>!x.parent&&x.name==='무수골 어르신 4가정 연탄 1,200장');if(coal&&Number(coal.amount)!==1300000){coal.amount=1300000;changed=true}
-  if(overseas&&coal&&(state.projects[0]!==coal||state.projects[1]!==overseas)){state.projects=[coal,overseas,...state.projects.filter(x=>x!==coal&&x!==overseas)];changed=true}
+  const leviteParent=state.projects.find(x=>!x.parent&&x.name===leviteName),otherLeviteChildren=state.projects.filter(x=>x.parent===leviteName&&x!==martyr);
+  const leviteGroup=leviteParent?[leviteParent,martyr,...otherLeviteChildren]:[martyr,...otherLeviteChildren];if(leviteGroup.some((x,i)=>state.projects[i]!==x)){state.projects=[...leviteGroup,...state.projects.filter(x=>!leviteGroup.includes(x))];changed=true}
   return changed;
 }
 function summary(){
   $('target').textContent=money(state.confirmedTarget);$('count').textContent=state.projects.filter(x=>!x.parent).length+'건';$('links').textContent=state.projects.filter(x=>x.url).length+'건';$('plannedSum').textContent=state.planned.length+'건 · '+money(state.planned.reduce((s,x)=>s+Number(x.amount||0),0));
   const levite=parentBudget('오늘을 사는 레위인'),overseas=parentBudget('해외 어려운 이웃 구제사역');
-  $('leviteBudget').textContent='잔액 '+money(levite.balance);$('leviteDetail').innerHTML='<span class="budgetline">배정 '+money(levite.allocated)+' · 하위 '+levite.count+'건 집행 '+money(levite.spent)+'</span><br>11,544,583원 + 2,025,440원 = 13,570,023원';
+  $('leviteBudget').textContent='잔액 '+money(levite.balance);$('leviteDetail').innerHTML='<span class="budgetline">배정 '+money(levite.allocated)+' · 하위 '+levite.count+'건 집행 '+money(levite.spent)+'</span><br>11,544,583원 + 2,025,440원 + 2,000,000원 = 15,570,023원';
   $('overseasBudget').textContent='잔액 '+money(overseas.balance);$('overseasDetail').innerHTML='<span class="budgetline">배정 '+money(overseas.allocated)+' · 하위 '+overseas.count+'건 집행 '+money(overseas.spent)+'</span><br>하위사업 금액은 상위 배정액 안에서 차감';
 }
 function completed(p){const a=STAGES.filter((_,i)=>p.steps[i]);return a.length?a.join(' · '):'진행 전'}
