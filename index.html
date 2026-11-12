@@ -40,7 +40,7 @@ const SUPABASE_URL='https://pnzubrobhbhiunujasnz.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_DRjAgBS8ai-gtACDDf-Mmw_6TnVuZ5i';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const blank=(name,amount=0)=>({name,amount,content:'',manager:'',operator:'',url:'',memo:'',steps:[false,false,false,false,false,false],parent:''});
-const SEED={confirmedTarget:151341094,projects:[],planned:[]};
+const SEED={confirmedTarget:153918794,projects:[],planned:[]};
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(SEED)}catch{state=structuredClone(SEED)}
 let cloudUser=null,cloudRevision=0,cloudChannel=null,savingCloud=false;
 let kind='projects',selected=0,timer;const $=id=>document.getElementById(id);const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -50,7 +50,7 @@ function queue(){clearTimeout(timer);$('saveState').textContent='저장 중…';
 function parentBudget(name){const parent=state.projects.find(x=>!x.parent&&x.name===name);const children=state.projects.filter(x=>x.parent===name);const allocated=Number(parent?.amount||0);const spent=children.reduce((s,x)=>s+Number(x.amount||0),0);return{allocated,spent,balance:allocated-spent,count:children.length}}
 function apply20261109Update(){
   let changed=false;state.projects=Array.isArray(state.projects)?state.projects:[];state.planned=Array.isArray(state.planned)?state.planned:[];
-  if(state.confirmedTarget!==151341094){state.confirmedTarget=151341094;changed=true}
+  if(state.confirmedTarget!==153918794){state.confirmedTarget=153918794;changed=true}
   const leviteName='오늘을 사는 레위인',secondName='10-2 이오늘 찬양사역자 가정 가구 지원';
   const secondMatches=state.projects.filter(x=>x.parent===leviteName&&(Number(x.amount)===2025440||x.name===secondName));
   let second=secondMatches.sort((a,b)=>(b.steps?.filter(Boolean).length||0)-(a.steps?.filter(Boolean).length||0))[0];
@@ -87,9 +87,10 @@ function apply20261109Update(){
   const overseas=state.projects.find(x=>!x.parent&&x.name==='해외 어려운 이웃 구제사역');if(overseas&&Number(overseas.amount)!==22000000){overseas.amount=22000000;changed=true}
   const coal=state.projects.find(x=>!x.parent&&x.name==='무수골 어르신 4가정 연탄 1,200장');if(coal){if(Number(coal.amount)!==1300000){coal.amount=1300000;changed=true}if(coal.url!=='https://www.sls.or.kr/_bbs/freebbs/5001191'){coal.url='https://www.sls.or.kr/_bbs/freebbs/5001191';changed=true}if(!coal.steps?.[0]){coal.steps=Array.isArray(coal.steps)?coal.steps:[false,false,false,false,false,false];coal.steps[0]=true;changed=true}}
   const vietnamName='칼빈대학교에 재학 중인 베트남 전도사 12명에게 장보기 지원',vietnamData={name:'칼빈대학교에 재학 중인 베트남 전도사 12명에게 장보기 지원',amount:2400000,content:'타국에서 어려운 형편 가운데 학업과 사역을 병행하는 베트남 전도사 12명에게 1인당 20만원씩 장보기를 지원하여 식료품과 생필품을 마련하고 안정적으로 생활할 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'윤사무엘 강도사',parent:''};let vietnam=state.projects.find(x=>!x.parent&&x.name===vietnamName);if(!vietnam){vietnam={...blank(vietnamName,2400000),...vietnamData};state.projects.push(vietnam);changed=true}else{for(const [k,v] of Object.entries(vietnamData)){if(vietnam[k]!==v){vietnam[k]=v;changed=true}}}
+  const latestData=[{name:'형편이 어려운 두 어르신에게 냉장고와 방한용품 등 지원',amount:1464700,content:'홀로 폐지를 주우며 생활하는 어르신에게 냉장고와 방한용품을 지원하고, 연탄난로로 겨울을 나는 또 다른 어르신에게 전기장판과 이불을 지원하여 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'하성민 목사',parent:''},{name:'형편이 어려운 한부모 두 가정에 겨울 외투와 식료품, 건조기 지원',amount:1113000,content:'남편과 사별하고 홀로 자녀를 키우는 베트남 한부모 가정에 자녀들의 겨울 외투와 식료품을 지원하고, 또 다른 베트남 한부모 가정에는 의류건조기를 지원하여 안정적인 생활을 할 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'하성민 목사',parent:''}];const latestProjects=latestData.map(item=>{let project=state.projects.find(x=>!x.parent&&x.name===item.name);if(!project){project={...blank(item.name,item.amount),...item};state.projects.push(project);changed=true}else{for(const [k,v] of Object.entries(item)){if(project[k]!==v){project[k]=v;changed=true}}}return project});
   const leviteParent=state.projects.find(x=>!x.parent&&x.name===leviteName),otherLeviteChildren=state.projects.filter(x=>x.parent===leviteName&&x!==martyr);
   if(leviteParent){for(const [k,v] of Object.entries({content:'오늘을 사는 레위인을 위한 지원. 하위 집행내역 3건을 포함합니다.',memo:'하위사업 11,544,583원, 2,025,440원, 2,000,000원은 상위 40,000,000원에 포함합니다. 현재 잔액 24,429,977원. 총액에 중복 합산하지 않습니다.'})){if(leviteParent[k]!==v){leviteParent[k]=v;changed=true}}}
-  const leviteGroup=leviteParent?[leviteParent,martyr,...otherLeviteChildren]:[martyr,...otherLeviteChildren],priority=[vietnam,...(coal?[coal]:[]),...leviteGroup];if(priority.some((x,i)=>state.projects[i]!==x)){state.projects=[...priority,...state.projects.filter(x=>!priority.includes(x))];changed=true}
+  const leviteGroup=leviteParent?[leviteParent,martyr,...otherLeviteChildren]:[martyr,...otherLeviteChildren],priority=[...latestProjects,vietnam,...(coal?[coal]:[]),...leviteGroup];if(priority.some((x,i)=>state.projects[i]!==x)){state.projects=[...priority,...state.projects.filter(x=>!priority.includes(x))];changed=true}
   return changed;
 }
 function summary(){
