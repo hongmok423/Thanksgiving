@@ -93,6 +93,7 @@ function apply20261109Update(){
   const leviteParent=state.projects.find(x=>!x.parent&&x.name===leviteName),otherLeviteChildren=state.projects.filter(x=>x.parent===leviteName&&x!==martyr);
   if(leviteParent){for(const [k,v] of Object.entries({content:'오늘을 사는 레위인을 위한 지원. 하위 집행내역 3건을 포함합니다.',memo:'하위사업 11,544,583원, 2,025,440원, 2,000,000원은 상위 40,000,000원에 포함합니다. 현재 잔액 24,429,977원. 총액에 중복 합산하지 않습니다.'})){if(leviteParent[k]!==v){leviteParent[k]=v;changed=true}}}
   const leviteGroup=leviteParent?[leviteParent,martyr,...otherLeviteChildren]:[martyr,...otherLeviteChildren],priority=[...(junggyedong?[junggyedong]:[]),loveHouse,...(ssangmun?[ssangmun]:[]),...latestProjects,vietnam,...(coal?[coal]:[]),...leviteGroup];if(priority.some((x,i)=>state.projects[i]!==x)){state.projects=[...priority,...state.projects.filter(x=>!priority.includes(x))];changed=true}
+  const uniqueProjects=[],projectByKey=new Map();for(const project of state.projects){const key=(project.parent||'')+'\u0000'+project.name,existing=projectByKey.get(key);if(!existing){projectByKey.set(key,project);uniqueProjects.push(project)}else{existing.steps=(Array.isArray(existing.steps)?existing.steps:[false,false,false,false,false,false]).map((v,i)=>v||project.steps?.[i]);existing.url=existing.url||project.url||'';existing.memo=existing.memo||project.memo||'';changed=true}}if(uniqueProjects.length!==state.projects.length){state.projects=uniqueProjects;changed=true}
   return changed;
 }
 function summary(){
