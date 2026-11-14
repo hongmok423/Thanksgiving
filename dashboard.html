@@ -40,7 +40,7 @@ const SUPABASE_URL='https://pnzubrobhbhiunujasnz.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_DRjAgBS8ai-gtACDDf-Mmw_6TnVuZ5i';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const blank=(name,amount=0)=>({name,amount,content:'',manager:'',operator:'',url:'',memo:'',steps:[false,false,false,false,false,false],parent:''});
-const SEED={confirmedTarget:191939214,projects:[],planned:[]};
+const SEED={confirmedTarget:188939214,projects:[],planned:[]};
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(SEED)}catch{state=structuredClone(SEED)}
 let cloudUser=null,cloudRevision=0,cloudChannel=null,savingCloud=false;
 let kind='projects',selected=0,timer;const $=id=>document.getElementById(id);const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -51,7 +51,8 @@ function parentBudget(name){const parent=state.projects.find(x=>!x.parent&&x.nam
 function apply20261109Update(){
   let changed=false;state.projects=Array.isArray(state.projects)?state.projects:[];state.planned=Array.isArray(state.planned)?state.planned:[];
   if(!state.plannedCleared20261114){state.planned=[];state.plannedCleared20261114=true;changed=true}
-  if(state.confirmedTarget!==191939214){state.confirmedTarget=191939214;changed=true}
+  if(state.confirmedTarget!==188939214){state.confirmedTarget=188939214;changed=true}
+  const excludedDialysis=state.projects.filter(x=>!x.parent&&x.name==='신장투석 중인 고아와 과부 가정 주거비 지원');for(const project of excludedDialysis){state.projects.splice(state.projects.indexOf(project),1);changed=true}
   const leviteName='오늘을 사는 레위인',secondName='10-2 이오늘 찬양사역자 가정 가구 지원';
   const secondMatches=state.projects.filter(x=>x.parent===leviteName&&(Number(x.amount)===2025440||x.name===secondName));
   let second=secondMatches.sort((a,b)=>(b.steps?.filter(Boolean).length||0)-(a.steps?.filter(Boolean).length||0))[0];
