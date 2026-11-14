@@ -49,7 +49,8 @@ async function save(){localStorage.setItem(KEY,JSON.stringify(state));$('saveSta
 function queue(){clearTimeout(timer);$('saveState').textContent='저장 중…';timer=setTimeout(save,250)}
 function parentBudget(name){const parent=state.projects.find(x=>!x.parent&&x.name===name);const children=state.projects.filter(x=>x.parent===name);const allocated=Number(parent?.amount||0);const spent=children.reduce((s,x)=>s+Number(x.amount||0),0);return{allocated,spent,balance:allocated-spent,count:children.length}}
 function apply20261109Update(){
-  let changed=false;state.projects=Array.isArray(state.projects)?state.projects:[];state.planned=Array.isArray(state.planned)?state.planned:[];\n  if(!state.plannedCleared20261114){state.planned=[];state.plannedCleared20261114=true;changed=true}
+  let changed=false;state.projects=Array.isArray(state.projects)?state.projects:[];state.planned=Array.isArray(state.planned)?state.planned:[];
+  if(!state.plannedCleared20261114){state.planned=[];state.plannedCleared20261114=true;changed=true}
   if(state.confirmedTarget!==191939214){state.confirmedTarget=191939214;changed=true}
   const leviteName='오늘을 사는 레위인',secondName='10-2 이오늘 찬양사역자 가정 가구 지원';
   const secondMatches=state.projects.filter(x=>x.parent===leviteName&&(Number(x.amount)===2025440||x.name===secondName));
