@@ -94,6 +94,12 @@ function apply20261109Update(){
     {name:'루마니아 사뚜마레 15개 마을 집시 175가정 생명의쌀 밀가루 나눔',amount:2200000,content:'루마니아 사뚜마레 지역 15개 마을의 형편이 어려운 집시 175가정에 생명의쌀로 밀가루 20kg씩 나눕니다. 행정비 10%를 포함합니다.',manager:'파트너: 이호준 선교사'},
     {name:'탄자니아 신기다 위비아 마을 어르신 60가정 생명의쌀과 식료품 나눔',amount:2200000,content:'아프리카 탄자니아 신기다 지역 위비아 마을에서 자녀의 돌봄 없이 홀로 살아가는 형편이 어려운 어르신 60가정에 생명의쌀과 식료품을 나눕니다. 행정비 10%를 포함합니다.',manager:'파트너: 김인옥 선교사'}
   ];const overseasChildren=overseasDetails.map(item=>{let project=state.projects.find(x=>x.parent===overseasParent&&x.name===item.name);if(!project){project={...blank(item.name,item.amount),...item,parent:overseasParent};state.projects.push(project);changed=true}else{for(const [k,v] of Object.entries({...item,parent:overseasParent})){if(project[k]!==v){project[k]=v;changed=true}}}return project});
+  const plannedUpdates=[
+    {name:'형편이 어려운 한부모 두 가정에 겨울 외투와 생활가전 지원',amount:1500000,content:'기초생활수급을 받으며 지적장애 자녀를 양육하는 한부모 가정에 의류건조기와 자녀의 겨울 외투를 지원하고, 자녀를 홀로 키우며 지적장애가 있는 어머니까지 돌보는 가정에 생활가전을 지원하여 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'하성민 목사'},
+    {name:'도봉구에 거주하는 형편이 어려운 청소년 10가정에 방한용품 지원',amount:1500000,content:'도봉구에 거주하는 형편이 어려운 청소년 10가정을 방문하여 겨울을 따뜻하게 보낼 수 있도록 필요한 방한용품을 지원하여 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'하성민 목사'}
+  ];
+  const plannedPriority=[];for(const item of plannedUpdates){let project=state.planned.find(x=>x.name===item.name);if(!project){project={...blank(item.name,item.amount),...item};state.planned.push(project);changed=true}else{for(const [k,v] of Object.entries(item)){if(project[k]!==v){project[k]=v;changed=true}}}plannedPriority.push(project)}
+  if(plannedPriority.some((x,i)=>state.planned[i]!==x)){state.planned=[...plannedPriority,...state.planned.filter(x=>!plannedPriority.includes(x))];changed=true}
   const coldWeatherName='쪽방촌에 거주하는 형편이 어려운 이웃들에게 방한용품 지원';
   let coldWeather=state.projects.find(x=>!x.parent&&x.name===coldWeatherName);
   const coldWeatherData={amount:1500000,content:'쪽방촌에 거주하는 형편이 어려운 이웃들에게 기모 양말과 패딩 조끼를 지원하여 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};
