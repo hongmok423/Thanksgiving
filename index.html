@@ -40,7 +40,7 @@ const SUPABASE_URL='https://pnzubrobhbhiunujasnz.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_DRjAgBS8ai-gtACDDf-Mmw_6TnVuZ5i';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const blank=(name,amount=0)=>({name,amount,content:'',manager:'',operator:'',url:'',memo:'',steps:[false,false,false,false,false,false],parent:''});
-const SEED={confirmedTarget:195323604,offeringTotal:196111626,projects:[],planned:[]};
+const SEED={confirmedTarget:195373604,offeringTotal:196111626,projects:[],planned:[]};
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(SEED)}catch{state=structuredClone(SEED)}
 let cloudUser=null,cloudRevision=0,cloudChannel=null,savingCloud=false,saveQueued=false,retryTimer=null;
 let kind='projects',selected=0,timer;const $=id=>document.getElementById(id);const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -51,7 +51,7 @@ function parentBudget(name){const parent=state.projects.find(x=>!x.parent&&x.nam
 function apply20261109Update(){
   let changed=false;state.projects=Array.isArray(state.projects)?state.projects:[];state.planned=Array.isArray(state.planned)?state.planned:[];
   if(!state.plannedCleared20261114){state.planned=[];state.plannedCleared20261114=true;changed=true}
-  if(state.confirmedTarget!==195323604){state.confirmedTarget=195323604;changed=true}
+  if(state.confirmedTarget!==195373604){state.confirmedTarget=195373604;changed=true}
   const excludedDialysis=state.projects.filter(x=>!x.parent&&x.name==='신장투석 중인 고아와 과부 가정 주거비 지원');for(const project of excludedDialysis){state.projects.splice(state.projects.indexOf(project),1);changed=true}
   const leviteName='오늘을 사는 레위인',secondName='10-2 이오늘 찬양사역자 가정 가구 지원';
   const secondMatches=state.projects.filter(x=>x.parent===leviteName&&(Number(x.amount)===2025440||x.name===secondName));
@@ -112,7 +112,7 @@ function apply20261109Update(){
   let cancer=state.projects.find(x=>!x.parent&&x.name===cancerName);
   const cancerData={amount:2000000,content:'말기 암으로 투병하며 고등학교 2학년 딸을 홀로 키우는 어머니 가정에 긴급 생계비를 지원하여 어려운 형편 가운데서도 생활을 이어갈 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};
   if(!cancer){cancer={...blank(cancerName,cancerData.amount),...cancerData};state.projects.unshift(cancer);changed=true}else{for(const [k,v] of Object.entries(cancerData)){if(cancer[k]!==v){cancer[k]=v;changed=true}}}
-  const kimchi=state.projects.find(x=>!x.parent&&x.name==='노원구 1,000가정 김장김치 10톤');if(kimchi&&Number(kimchi.amount)!==37112150){kimchi.amount=37112150;changed=true}
+  const kimchi=state.projects.find(x=>!x.parent&&x.name==='노원구 1,000가정 김장김치 10톤');if(kimchi&&Number(kimchi.amount)!==37162150){kimchi.amount=37162150;changed=true}
   const coal=state.projects.find(x=>!x.parent&&x.name==='무수골 어르신 4가정 연탄 1,200장');if(coal){if(Number(coal.amount)!==1572240){coal.amount=1572240;changed=true}if(coal.url!=='https://www.sls.or.kr/_bbs/freebbs/5001191'){coal.url='https://www.sls.or.kr/_bbs/freebbs/5001191';changed=true}if(!coal.steps?.[0]){coal.steps=Array.isArray(coal.steps)?coal.steps:[false,false,false,false,false,false];coal.steps[0]=true;changed=true}}
   const vietnamName='칼빈대학교에 재학 중인 베트남 전도사 12명에게 장보기 지원',vietnamData={name:'칼빈대학교에 재학 중인 베트남 전도사 12명에게 장보기 지원',amount:2400000,content:'타국에서 어려운 형편 가운데 학업과 사역을 병행하는 베트남 전도사 12명에게 1인당 20만원씩 장보기를 지원하여 식료품과 생필품을 마련하고 안정적으로 생활할 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'윤사무엘 강도사',parent:''};let vietnam=state.projects.find(x=>!x.parent&&x.name===vietnamName);if(!vietnam){vietnam={...blank(vietnamName,2400000),...vietnamData};state.projects.push(vietnam);changed=true}else{for(const [k,v] of Object.entries(vietnamData)){if(vietnam[k]!==v){vietnam[k]=v;changed=true}}}
   const familyOldName='형편이 어려운 한부모 두 가정에 겨울 외투와 식료품, 건조기 지원',familyNewData={name:'형편이 어려운 고아와 과부 세 가정에 겨울 외투와 식료품, 건조기 지원',amount:1665430,content:'남편과 사별하고 홀로 자녀를 키우는 베트남 가정에 자녀들의 겨울 외투와 식료품을 지원하고, 또 다른 베트남 고아와 과부 가정에는 의류건조기를 지원하여 안정적인 생활을 할 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'하성민 목사',url:'https://www.sls.or.kr/_bbs/freebbs/5002543',parent:''};const familyCandidates=state.projects.filter(x=>!x.parent&&(x.name===familyOldName||x.name===familyNewData.name||x.url===familyNewData.url));let familyProject=familyCandidates[0];if(!familyProject){familyProject={...blank(familyNewData.name,familyNewData.amount),...familyNewData};state.projects.push(familyProject);changed=true}for(const duplicate of familyCandidates.slice(1)){familyProject.steps=(Array.isArray(familyProject.steps)?familyProject.steps:[false,false,false,false,false,false]).map((v,i)=>v||duplicate.steps?.[i]);familyProject.url=familyProject.url||duplicate.url||'';familyProject.memo=familyProject.memo||duplicate.memo||'';state.projects.splice(state.projects.indexOf(duplicate),1);changed=true}for(const [k,v] of Object.entries(familyNewData)){if(familyProject[k]!==v){familyProject[k]=v;changed=true}}if(!familyProject.steps?.[0]){familyProject.steps=Array.isArray(familyProject.steps)?familyProject.steps:[false,false,false,false,false,false];familyProject.steps[0]=true;changed=true}
