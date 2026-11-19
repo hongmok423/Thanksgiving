@@ -40,7 +40,7 @@ const SUPABASE_URL='https://pnzubrobhbhiunujasnz.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_DRjAgBS8ai-gtACDDf-Mmw_6TnVuZ5i';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const blank=(name,amount=0)=>({name,amount,content:'',manager:'',operator:'',url:'',memo:'',steps:[false,false,false,false,false,false],parent:''});
-const SEED={confirmedTarget:198374364,offeringTotal:196111626,projects:[],planned:[]};
+const SEED={confirmedTarget:198724364,offeringTotal:196111626,projects:[],planned:[]};
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(SEED)}catch{state=structuredClone(SEED)}
 let cloudUser=null,cloudRevision=0,cloudChannel=null,savingCloud=false,saveQueued=false,retryTimer=null;
 let kind='projects',selected=0,timer;const $=id=>document.getElementById(id);const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -51,7 +51,7 @@ function parentBudget(name){const parent=state.projects.find(x=>!x.parent&&x.nam
 function apply20261109Update(){
   let changed=false;state.projects=Array.isArray(state.projects)?state.projects:[];state.planned=Array.isArray(state.planned)?state.planned:[];
   if(!state.plannedCleared20261114){state.planned=[];state.plannedCleared20261114=true;changed=true}
-  if(state.confirmedTarget!==198374364){state.confirmedTarget=198374364;changed=true}
+  if(state.confirmedTarget!==198724364){state.confirmedTarget=198724364;changed=true}
   const excludedDialysis=state.projects.filter(x=>!x.parent&&x.name==='신장투석 중인 고아와 과부 가정 주거비 지원');for(const project of excludedDialysis){state.projects.splice(state.projects.indexOf(project),1);changed=true}
   const leviteName='오늘을 사는 레위인',secondName='10-2 이오늘 찬양사역자 가정 가구 지원';
   const secondMatches=state.projects.filter(x=>x.parent===leviteName&&(Number(x.amount)===2025440||x.name===secondName));
@@ -106,9 +106,9 @@ function apply20261109Update(){
   let coldWeather=state.projects.find(x=>!x.parent&&x.name===coldWeatherName);
   const coldWeatherData={amount:1500000,content:'쪽방촌에 거주하는 형편이 어려운 이웃들에게 기모 양말과 패딩 조끼를 지원하여 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};
   if(!coldWeather){coldWeather={...blank(coldWeatherName,coldWeatherData.amount),...coldWeatherData};state.projects.unshift(coldWeather);changed=true}else{for(const [k,v] of Object.entries(coldWeatherData)){if(coldWeather[k]!==v){coldWeather[k]=v;changed=true}}}
-  const threeFamiliesOldName='형편이 어려운 이웃 3가정에 생활가전과 생계비, 식료품 지원',threeFamiliesName='형편이 어려운 이웃 2가정에 생활가전과 생계비 지원';
-  let threeFamilies=state.projects.find(x=>!x.parent&&(x.name===threeFamiliesName||x.name===threeFamiliesOldName));
-  const threeFamiliesData={name:threeFamiliesName,amount:2266200,content:'신장투석을 받으며 열두 살 딸을 홀로 키우는 어머니 가정에 긴급 생계비 100만원과 장롱, 책상을 지원하고, 정신질환으로 일상생활이 어려운 이웃에게 냉장고와 텔레비전을 지원합니다. 첫 번째 가정 1,522,300원, 두 번째 가정 743,900원으로 총 2,266,200원을 사용합니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};
+  const threeFamiliesOldNames=['형편이 어려운 이웃 3가정에 생활가전과 생계비, 식료품 지원','형편이 어려운 이웃 2가정에 생활가전과 생계비 지원'],threeFamiliesName='질병과 장애, 정신건강의 어려움을 겪는 3가정에 생계비와 생활 지원';
+  let threeFamilies=state.projects.find(x=>!x.parent&&(x.name===threeFamiliesName||threeFamiliesOldNames.includes(x.name)));
+  const threeFamiliesData={name:threeFamiliesName,amount:2616200,content:'신장투석 중인 어머니와 열두 살 딸 가정에 긴급 생계비와 장롱·책상을 지원하고, 정신질환으로 일상생활이 어려운 이웃에게 냉장고와 텔레비전을 지원합니다. 사회와 단절된 청년에게는 전기공사비와 식료품을 지원합니다. 첫 번째 가정 1,522,300원, 두 번째 가정 743,900원, 세 번째 가정 350,000원으로 총 2,616,200원을 사용합니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'};
   if(!threeFamilies){threeFamilies={...blank(threeFamiliesName,threeFamiliesData.amount),...threeFamiliesData};state.projects.unshift(threeFamilies);changed=true}else{for(const [k,v] of Object.entries(threeFamiliesData)){if(threeFamilies[k]!==v){threeFamilies[k]=v;changed=true}}}
   const cancerName='말기 암으로 투병 중인 홀어머니와 고등학생 딸 가정에 긴급 생계비 지원';
   let cancer=state.projects.find(x=>!x.parent&&x.name===cancerName);
