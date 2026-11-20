@@ -40,7 +40,7 @@ const SUPABASE_URL='https://pnzubrobhbhiunujasnz.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_DRjAgBS8ai-gtACDDf-Mmw_6TnVuZ5i';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const blank=(name,amount=0)=>({name,amount,content:'',manager:'',operator:'',url:'',memo:'',steps:[false,false,false,false,false,false],parent:''});
-const SEED={confirmedTarget:198811364,offeringTotal:196111626,projects:[],planned:[]};
+const SEED={confirmedTarget:198772524,offeringTotal:196111626,projects:[],planned:[]};
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(SEED)}catch{state=structuredClone(SEED)}
 let cloudUser=null,cloudRevision=0,cloudChannel=null,savingCloud=false,saveQueued=false,retryTimer=null;
 let kind='projects',selected=0,timer;const $=id=>document.getElementById(id);const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -51,7 +51,7 @@ function parentBudget(name){const parent=state.projects.find(x=>!x.parent&&x.nam
 function apply20261109Update(){
   let changed=false;state.projects=Array.isArray(state.projects)?state.projects:[];state.planned=Array.isArray(state.planned)?state.planned:[];
   if(!state.plannedCleared20261114){state.planned=[];state.plannedCleared20261114=true;changed=true}
-  if(state.confirmedTarget!==198811364){state.confirmedTarget=198811364;changed=true}
+  if(state.confirmedTarget!==198772524){state.confirmedTarget=198772524;changed=true}
   const excludedDialysis=state.projects.filter(x=>!x.parent&&x.name==='신장투석 중인 고아와 과부 가정 주거비 지원');for(const project of excludedDialysis){state.projects.splice(state.projects.indexOf(project),1);changed=true}
   const leviteName='오늘을 사는 레위인',secondName='10-2 이오늘 찬양사역자 가정 가구 지원';
   const secondMatches=state.projects.filter(x=>x.parent===leviteName&&(Number(x.amount)===2025440||x.name===secondName));
@@ -107,9 +107,9 @@ function apply20261109Update(){
   let coldWeather=state.projects.find(x=>!x.parent&&(x.name===coldWeatherName||x.name===coldWeatherOldName||x.url==='https://www.sls.or.kr/_bbs/freebbs/5006725'));
   const coldWeatherData={name:coldWeatherName,amount:1587000,content:'동자동 쪽방촌의 어려운 이웃들에게 기모 양말 500개와 패딩 조끼 55벌을 지원하여 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사',url:'https://www.sls.or.kr/_bbs/freebbs/5006725'};
   if(!coldWeather){coldWeather={...blank(coldWeatherName,coldWeatherData.amount),...coldWeatherData,steps:[true,false,false,false,false,false]};state.projects.unshift(coldWeather);changed=true}else{for(const [k,v] of Object.entries(coldWeatherData)){if(coldWeather[k]!==v){coldWeather[k]=v;changed=true}}if(!coldWeather.steps?.[0]){coldWeather.steps=Array.isArray(coldWeather.steps)?coldWeather.steps:[false,false,false,false,false,false];coldWeather.steps[0]=true;changed=true}}
-  const threeFamiliesOldNames=['형편이 어려운 이웃 3가정에 생활가전과 생계비, 식료품 지원','형편이 어려운 이웃 2가정에 생활가전과 생계비 지원','질병과 장애, 정신건강의 어려움을 겪는 3가정에 생계비와 생활 지원'],threeFamiliesName='노원구에 거주하는 형편이 어려운 세 가정 지원';
+  const threeFamiliesOldNames=['형편이 어려운 이웃 3가정에 생활가전과 생계비, 식료품 지원','형편이 어려운 이웃 2가정에 생활가전과 생계비 지원','질병과 장애, 정신건강의 어려움을 겪는 3가정에 생계비와 생활 지원','노원구에 거주하는 형편이 어려운 세 가정 지원'],threeFamiliesName='질병과 장애로 어려움을 겪는 이웃 3가정에 생계비와 생활가전 등 지원';
   let threeFamilies=state.projects.find(x=>!x.parent&&(x.name===threeFamiliesName||threeFamiliesOldNames.includes(x.name)||x.url==='https://www.sls.or.kr/_bbs/freebbs/5006503'));
-  const threeFamiliesData={name:threeFamiliesName,amount:2616200,content:'열두 살 딸을 돌보며 신장투석 중인 어머니 가정에 긴급 생계비와 장롱·책상을 지원하고, 정신질환으로 일상생활이 어려운 이웃에게 냉장고와 텔레비전을 지원합니다. 사회와 단절된 청년에게는 전기공사비와 식료품을 지원합니다. 첫 번째 가정 1,522,300원, 두 번째 가정 743,900원, 세 번째 가정 350,000원으로 총 2,616,200원을 사용합니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사',url:'https://www.sls.or.kr/_bbs/freebbs/5006503'};
+  const threeFamiliesData={name:threeFamiliesName,amount:2577360,content:'신장투석을 받으며 홀로 딸을 키우는 가정에 긴급 생계비와 가구를 지원하고, 정신질환으로 일상생활이 어려운 이웃에게 냉장고와 텔레비전을 지원합니다. 또한 정신건강의 어려움으로 은둔 생활을 하는 청년에게 전기공사비와 식료품을 지원하여 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사',url:'https://www.sls.or.kr/_bbs/freebbs/5006503'};
   if(!threeFamilies){threeFamilies={...blank(threeFamiliesName,threeFamiliesData.amount),...threeFamiliesData,steps:[true,false,false,false,false,false]};state.projects.unshift(threeFamilies);changed=true}else{for(const [k,v] of Object.entries(threeFamiliesData)){if(threeFamilies[k]!==v){threeFamilies[k]=v;changed=true}}if(!threeFamilies.steps?.[0]){threeFamilies.steps=Array.isArray(threeFamilies.steps)?threeFamilies.steps:[false,false,false,false,false,false];threeFamilies.steps[0]=true;changed=true}}
   const cancerName='말기 암으로 투병 중인 홀어머니와 고등학생 딸 가정에 긴급 생계비 지원';
   let cancer=state.projects.find(x=>!x.parent&&x.name===cancerName);
