@@ -41,7 +41,7 @@ const SUPABASE_URL='https://pnzubrobhbhiunujasnz.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_DRjAgBS8ai-gtACDDf-Mmw_6TnVuZ5i';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const blank=(name,amount=0)=>({name,amount,content:'',manager:'',operator:'',url:'',memo:'',steps:[false,false,false,false,false,false],parent:''});
-const SEED={confirmedTarget:200893094,offeringTotal:196111626,projects:[],planned:[]};
+const SEED={confirmedTarget:200944894,offeringTotal:196111626,projects:[],planned:[]};
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(SEED)}catch{state=structuredClone(SEED)}
 let cloudUser=null,cloudRevision=0,cloudChannel=null,savingCloud=false,saveQueued=false,retryTimer=null;
 let kind='projects',selected=0,timer;const $=id=>document.getElementById(id);const money=n=>Number(n||0).toLocaleString('ko-KR')+'원';const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -52,7 +52,7 @@ function parentBudget(name){const parent=state.projects.find(x=>!x.parent&&x.nam
 function apply20261109Update(){
   let changed=false;state.projects=Array.isArray(state.projects)?state.projects:[];state.planned=Array.isArray(state.planned)?state.planned:[];
   if(!state.plannedCleared20261114){state.planned=[];state.plannedCleared20261114=true;changed=true}
-  if(state.confirmedTarget!==200893094){state.confirmedTarget=200893094;changed=true}
+  if(state.confirmedTarget!==200944894){state.confirmedTarget=200944894;changed=true}
   const excludedDialysis=state.projects.filter(x=>!x.parent&&x.name==='신장투석 중인 고아와 과부 가정 주거비 지원');for(const project of excludedDialysis){state.projects.splice(state.projects.indexOf(project),1);changed=true}
   const leviteName='오늘을 사는 레위인',secondName='10-2 이오늘 찬양사역자 가정 가구 지원';
   const secondMatches=state.projects.filter(x=>x.parent===leviteName&&(Number(x.amount)===2025440||x.name===secondName));
@@ -81,7 +81,7 @@ function apply20261109Update(){
     {name:'월세를 체납한 96세 어르신에게 1년 치 월세와 식료품 지원',amount:2867160,content:'반지하에서 홀로 생활하며 월세 체납으로 어려움을 겪는 96세 어르신에게 밀린 6개월 치 월세와 앞으로의 6개월 치 월세, 과일과 식료품을 지원하여 안정적인 생활을 할 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사',url:'https://www.sls.or.kr/_bbs/freebbs/5001067'},
     {name:'시설에서 자립하는 자립준비청년 8명에 소형가전 지원',amount:2419600,content:'보육시설에서 자립하여 새출발하는 자립준비청년 8명에게 전기밥솥, 청소기, 에어프라이어를 지원하여 격려하고 응원합니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'},
     {name:'파주에 거주하는 한부모 두 가정에 겨울 외투와 식료품 지원',amount:925420,content:'파주에 거주하는 형편이 어려운 한부모 두 가정의 자녀에게 겨울 외투를 지원하고, 두 가정에 고기 등 식료품을 채워주어 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'},
-    {name:'서울역 노숙인에게 방한 내복과 식료품 지원',amount:1500000,content:'추운 겨울을 거리에서 보내는 서울역 노숙인들에게 방한 내복과 식료품을 지원하여 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'고혁신 목사'}
+    {name:'서울역 노숙인에게 방한 내복과 식료품 지원',amount:1551800,content:'추운 겨울을 거리에서 보내는 서울역 노숙인들에게 방한 내복과 식료품을 지원하여 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'고혁신 목사'}
   ];
   const addedProjects=additions.map(item=>{const project=state.projects.find(x=>!x.parent&&x.name===item.name)||{...blank(item.name,item.amount),...item};for(const [k,v] of Object.entries(item)){if(project[k]!==v){project[k]=v;changed=true}}return project});
   for(const project of [...addedProjects].reverse()){if(!state.projects.includes(project)){state.projects.unshift(project);changed=true}}
@@ -100,6 +100,7 @@ function apply20261109Update(){
     {name:'탄자니아 신기다 위비아 마을 어르신 60가정 생명의쌀과 식료품 나눔',amount:2200000,content:'아프리카 탄자니아 신기다 지역 위비아 마을에서 자녀의 돌봄 없이 홀로 살아가는 형편이 어려운 어르신 60가정에 생명의쌀과 식료품을 나눕니다. 행정비 10%를 포함합니다.',manager:'파트너: 김인옥 선교사'}
   ];const overseasChildren=overseasDetails.map(item=>{let project=state.projects.find(x=>x.parent===overseasParent&&x.name===item.name);if(!project){project={...blank(item.name,item.amount),...item,parent:overseasParent};state.projects.push(project);changed=true}else{for(const [k,v] of Object.entries({...item,parent:overseasParent})){if(project[k]!==v){project[k]=v;changed=true}}}return project});
   const confirmedUpdates=[
+    {name:'서울역 노숙인에게 방한 내복과 식료품 지원',amount:1551800,content:'고등부 아이들이 추운 겨울을 거리에서 보내는 서울역 노숙인들에게 방한 내복과 식료품을 지원하여 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'고혁신 목사'},
     {name:'도봉구에 거주하는 형편이 어려운 아동 10가정에 식료품과 생활용품 지원',aliases:['도봉구 형편이 어려운 청소년 10가정에 식료품과 생활용품 지원','도봉구에 거주하는 형편이 어려운 청소년 10가정에 방한용품 지원'],amount:1622520,content:'도봉구에 거주하는 형편이 어려운 아동 8가정에 식료품 키트를 지원하고, 습기가 많은 반지하에서 어린 자녀를 양육하는 가정에 제습제와 식료품을 지원합니다. 또한 장애로 어려움을 겪는 아동 가정에 가스레인지와 제습기를 지원하여 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'하성민 목사',url:'https://www.sls.or.kr/_bbs/freebbs/5006850'},
     {name:'형편이 어려운 고아와 과부 두 가정에 생활가전과 생계비 지원',aliases:['형편이 어려운 한부모 두 가정에 겨울 외투와 생활가전 지원'],amount:1954000,content:'장애가 있는 아들을 홀로 양육하며 세무사 시험을 준비하는 가정에 건조기와 전기장판, 자녀의 겨울옷을 지원하고, 두 아들과 지적장애가 있는 친정어머니를 돌보며 생활하는 가정에 전기밥솥과 긴급 생계비를 지원하여 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'하성민 목사',url:'https://www.sls.or.kr/_bbs/freebbs/5007133'},
     {name:'형편이 어려운 이웃 17명에게 겨울 외투 지원',amount:1583000,content:'형편이 어려운 이웃 17명에게 겨울 외투를 지원하여 추운 겨울을 따뜻하게 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사',url:''},
@@ -143,7 +144,7 @@ function apply20261109Update(){
   northYouth=syncOfficial({name:'경기북부 지역 자립준비청년들에게 의류와 생활용품 지원',amount:2000000,content:'경기북부 지역에서 자립준비청년들을 돌보는 목회자를 통해 홀로서기를 준비하는 청년들에게 필요한 의류와 생활용품을 지원하여 안정적인 자립을 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'이헌택 목사'});
   singleMom=syncOfficial({name:'가정에서 분리되어 보호가 필요한 청소년의 주거비와 생활용품 지원',amount:7275170,content:'가정폭력으로 가족과 떨어져 갈 곳이 없어진 17세 청소년이 안전한 보금자리를 마련하고 안정적으로 생활할 수 있도록 주거비 500만원과 생활용품 100만원, 학습기기, 겨울 외투 등을 지원하여 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'현광섭 목사',url:'https://www.sls.or.kr/_bbs/freebbs/5003308'},['갈 곳이 없는 17세 청소년에게 주거비와 생활용품 지원']);
   restored=syncOfficial({name:'노원구 형편이 어려운 중학생 7명에게 겨울 외투와 3가정에 식료품 지원',amount:1457990,content:'노원구의 한 중학교에 재학 중인 형편이 어려운 학생 7명에게 겨울 외투를 지원하고, 어려운 3가정에는 장보기로 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'},['형편이 어려운 중학생 10명에게 겨울 의류와 식료품 지원','노원구 형편이 어려운 중학생 8명에게 겨울 외투와 2가정에 식료품 지원']);
-  syncOfficial({name:'서울역 노숙인에게 방한 내복과 식료품 지원',amount:1500000,content:'고등부 아이들이 추운 겨울을 거리에서 보내는 서울역 노숙인들에게 방한 내복과 식료품을 지원하여 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'고혁신 목사'});
+  syncOfficial({name:'서울역 노숙인에게 방한 내복과 식료품 지원',amount:1551800,content:'고등부 아이들이 추운 겨울을 거리에서 보내는 서울역 노숙인들에게 방한 내복과 식료품을 지원하여 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'고혁신 목사'});
   const leviteParent=state.projects.find(x=>!x.parent&&x.name===leviteName),otherLeviteChildren=state.projects.filter(x=>x.parent===leviteName&&x!==nextGenerationPastor&&x!==leviteHousing&&x!==reliefWorker&&x!==feast&&x!==martyr);
   if(leviteParent){for(const [k,v] of Object.entries({amount:55000000,content:'오늘을 사는 레위인을 위한 지원. 하위 집행내역 7건을 포함합니다.',memo:'하위사업 7건의 집행액 53,019,283원은 상위 55,000,000원에 포함합니다. 현재 잔액 1,980,717원. 총액에 중복 합산하지 않습니다.'})){if(leviteParent[k]!==v){leviteParent[k]=v;changed=true}}}
   const leviteGroup=leviteParent?[leviteParent,nextGenerationPastor,leviteHousing,reliefWorker,feast,martyr,...otherLeviteChildren]:[nextGenerationPastor,leviteHousing,reliefWorker,feast,martyr,...otherLeviteChildren],priority=[restored,...newConfirmedPriority,...(coldWeather?[coldWeather]:[]),...(threeFamilies?[threeFamilies]:[]),...(cancer?[cancer]:[]),...(kimchi?[kimchi]:[]),...(coal?[coal]:[]),northYouth,singleMom,...(overseas?[overseas,...overseasChildren]:[]),familyProject,...officialProjects,...(junggyedong?[junggyedong]:[]),loveHouse,...(ssangmun?[ssangmun]:[]),...latestProjects,...leviteGroup];if(priority.some((x,i)=>state.projects[i]!==x)){state.projects=[...priority,...state.projects.filter(x=>!priority.includes(x))];changed=true}
