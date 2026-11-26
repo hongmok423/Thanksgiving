@@ -148,6 +148,14 @@ function apply20261109Update(){
   singleMom=syncOfficial({name:'가정에서 분리되어 보호가 필요한 청소년의 주거비와 생활용품 지원',amount:7275170,content:'가정폭력으로 가족과 떨어져 갈 곳이 없어진 17세 청소년이 안전한 보금자리를 마련하고 안정적으로 생활할 수 있도록 주거비 500만원과 생활용품 100만원, 학습기기, 겨울 외투 등을 지원하여 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'현광섭 목사',url:'https://www.sls.or.kr/_bbs/freebbs/5003308'},['갈 곳이 없는 17세 청소년에게 주거비와 생활용품 지원']);
   restored=syncOfficial({name:'노원구 형편이 어려운 중학생 7명에게 겨울 외투와 3가정에 식료품 지원',amount:1457990,content:'노원구의 한 중학교에 재학 중인 형편이 어려운 학생 7명에게 겨울 외투를 지원하고, 어려운 3가정에는 장보기로 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사'},['형편이 어려운 중학생 10명에게 겨울 의류와 식료품 지원','노원구 형편이 어려운 중학생 8명에게 겨울 외투와 2가정에 식료품 지원']);
   syncOfficial({name:'서울역 노숙인에게 방한 내복과 식료품 지원',amount:1551800,content:'고등부 아이들이 추운 겨울을 거리에서 보내는 서울역 노숙인들에게 방한 내복과 식료품을 지원하여 따뜻한 겨울을 보낼 수 있도록 돕습니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'고혁신 목사'});
+  const replacedPastorSupport=state.projects.filter(project=>
+    Number(project.amount)===1980717 &&
+    String(project.name||'').replace(/^#?\s*40\s*(?:번|[.)-])?\s*/,'').trim()==='어려운 목회자 가정 위로와 격려'
+  );
+  if(replacedPastorSupport.length){
+    state.projects=state.projects.filter(project=>!replacedPastorSupport.includes(project));
+    changed=true;
+  }
   const bereavedFamily=upsertLeviteChild({name:'고 임윤경 사모 유가족에게 생활비 지원',amount:1500000,content:'네 자녀를 남기고 세상을 떠난 고 임윤경 사모의 유가족(남편 변동익 목사)이 어려운 시간을 잘 이겨내고 안정적으로 생활할 수 있도록 지원하며 위로하고 격려합니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사',parent:leviteName});
   const ministryBag=upsertLeviteChild({name:'찬양사역자 염민규 목사에게 가방 지원',amount:500000,content:'예수전도단 화요모임에서 찬양인도자로 섬기는 염민규 목사에게 사역에 필요한 가방을 지원하며 격려합니다.',manager:'추수감사절기구제부(부장 조병일)',operator:'홍성민 목사',parent:leviteName});
   const leviteParent=state.projects.find(x=>!x.parent&&x.name===leviteName),otherLeviteChildren=state.projects.filter(x=>x.parent===leviteName&&x!==nextGenerationPastor&&x!==leviteHousing&&x!==reliefWorker&&x!==feast&&x!==martyr&&x!==bereavedFamily&&x!==ministryBag);
